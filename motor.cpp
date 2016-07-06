@@ -5,9 +5,9 @@ Motor::Motor (){
   
 }
 
-int Motor::_marginErrorNumber = 2;
+int Motor::_marginErrorNumber = 5;
 
-void Motor::_testInputValues(int leftRight, int upDown){
+void Motor::_testInputValues(int upDown, int leftRight){
   Serial.print("left and right ");
   Serial.println(leftRight);
   Serial.print("up and down " );
@@ -34,13 +34,16 @@ void Motor::readMotorsInputAndTurn(){
 	int x = pulseInPlus(_xPin);
 	int y = pulseInPlus(_yPin);
 
-  _testInputValues(x, y);
+  // add (100) to fix the range for left and right movement
+  y = y + 100;
   
-	//_figureOutDirectionEngine(x,y);
+  //_testInputValues(x, y);
+  
+	_figureOutDirectionEngine(x,y); // (upDown, leftRigh)
 	
 }
 
-void Motor::_figureOutDirectionEngine(int x, int y){
+void Motor::_figureOutDirectionEngine(int y, int x){
 	
 	//example what this is doing
 	/*
@@ -66,9 +69,9 @@ void Motor::_figureOutDirectionEngine(int x, int y){
 	
  
         
-        Serial.println("");
+        Serial.println("\n\n");
         
-        delay(2000);
+        //delay(2000);
 
 	//donuts
 	if(marginError(y,_marginErrorNumber)){

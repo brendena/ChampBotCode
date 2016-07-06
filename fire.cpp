@@ -21,9 +21,9 @@ void Fire::checkFireSwitch()
 {
   int ch = pulseInPlus(_pin);
 
-  _testInputValues(ch);
+  //_testInputValues(ch);
   
-  //_checkFireSwitchConditionals(ch);
+  _checkFireSwitchConditionals(ch);
 }
 
 void Fire::_checkFireSwitchConditionals(int ch)

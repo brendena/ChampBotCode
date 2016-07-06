@@ -10,6 +10,9 @@ class Master {
 		static int minParametersMaped;
 		static int maxParametersMaped;
     int pulseInPlus(int pin);
+
+    static int _mapedLowerBound; 
+    static int _mapedUpperBound; 
     
     bool returnSwitchValue(int x);
 };

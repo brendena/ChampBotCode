@@ -2,6 +2,9 @@
 
 int Master::minParametersMaped = 0;
 int Master::maxParametersMaped = 100;
+int Master::_mapedLowerBound = 1040;
+int Master::_mapedUpperBound = 1880;
+
 
 int Master::pulseInPlus(int pin)
 {
@@ -20,8 +23,16 @@ int Master::changeRange(int x){
   if(x == 0){
     return 0;  
   }
-
-  return map(x,1055, 1900,minParametersMaped, maxParametersMaped);
+  else if(x < _mapedLowerBound)
+  {
+    return minParametersMaped;
+  }
+  else if(x > _mapedUpperBound)
+  {
+    return maxParametersMaped;
+  }
+  
+  return map(x,_mapedLowerBound, _mapedUpperBound,minParametersMaped, maxParametersMaped);
   
   //map(value, fromLow, fro-+mHigh,toLow, toHigh)
     

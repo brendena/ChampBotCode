@@ -13,10 +13,10 @@ class Motor : public Master
     void readMotorsInputAndTurn();
     
   private:
-    void _testInputValues(int x, int y);
+    void _testInputValues(int upDown, int leftRigh);
     static int _marginErrorNumber; 
     void _digitalPotWrite(int address, int value);
-    void _figureOutDirectionEngine(int x, int y);
+    void _figureOutDirectionEngine(int y, int x);
     int _speedLeftMotor;
     int _speedRightMotor;
     int _xPin; //pin

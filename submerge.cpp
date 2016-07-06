@@ -21,9 +21,9 @@ void Submerge::checkSubmerging()
 {
   int ch = pulseInPlus(_pin);
 
-  _testInputValues(ch);
+  //_testInputValues(ch);
   
-  //_checkSubmerginConditional(ch);
+  _checkSubmerginConditional(ch);
 }
 
 void Submerge::_checkSubmerginConditional(int ch)
@@ -44,6 +44,8 @@ void Submerge::_checkSubmerginConditional(int ch)
         currentTime = millis();
         if ( currentTime - startTime <= 20000)
         {
+           Serial.print("Timer: ");
+           Serial.println((currentTime - startTime) / 1000 );
            digitalWrite(_pin, HIGH);
         }
         // Emergency!! turn off submerging mode

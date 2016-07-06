@@ -1,19 +1,22 @@
 #include "motor.h"
 
 
-Motor::Motor (int xPin, int yPin, int slavePin){
-  pinMode(xPin, INPUT);
-  _xPin = xPin;
-  pinMode(yPin, INPUT);
-  _yPin = yPin;
-  pinMode(slavePin, OUTPUT);
-  _slavePin = slavePin;
+Motor::Motor (){
   
 }
 
 int Motor::_marginErrorNumber = 2;
 
-void Motor::init(int xPin, int yPin, int slavePin)
+void Motor::_testInputValues(int leftRight, int upDown){
+  Serial.print("left and right ");
+  Serial.println(leftRight);
+  Serial.print("up and down " );
+  Serial.println(upDown);
+  Serial.println(" ");
+}
+
+
+void Motor::pins(int xPin, int yPin, int slavePin)
 {
   pinMode(xPin, INPUT);
   _xPin = xPin;
@@ -28,13 +31,12 @@ void Motor::init(int xPin, int yPin, int slavePin)
 }
 void Motor::readMotorsInputAndTurn(){
 
-	int x = pulseIn(_xPin, HIGH, 25000);
-	int y = pulseIn(_yPin, HIGH, 25000);
+	int x = pulseInPlus(_xPin);
+	int y = pulseInPlus(_yPin);
 
-  //Serial.println(x);
-  //Serial.println(y);
+  _testInputValues(x, y);
   
-	_figureOutDirectionEngine(x,y);
+	//_figureOutDirectionEngine(x,y);
 	
 }
 
@@ -86,7 +88,7 @@ void Motor::_figureOutDirectionEngine(int x, int y){
         else if(marginError(x,_marginErrorNumber)){
 	        // going Forward
                
-		  _speedLeftMotor = y;
+		        _speedLeftMotor = y;
 	          _speedRightMotor = y;
                
 		// going backward
@@ -159,7 +161,9 @@ void Motor::_figureOutDirectionEngine(int x, int y){
   Serial.print(_speedRightMotor);
   Serial.print(" right Motor - Maped ");
   Serial.println(mappedRight);
-  
+
+
+  //this is because currently we can't go backwards.
   //int mappedLeft = map(_speedLeftMotor, -100, 100 , 0, 255);
   int mappedLeft = map(_speedLeftMotor, 0, 100 , 0, 255);
   Serial.print(_speedLeftMotor);

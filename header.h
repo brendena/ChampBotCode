@@ -5,12 +5,13 @@
 /*
 notes
 
-ch1 - x left stick
-ch2 - y left stick
-ch3 - y right stick
-ch4 - x right stick
-ch5 - front right top switch
-ch6 - right top knob
+pins being used
+2-7 are being used for input
+
+8-9 for relay
+
+10 - 13 are being used for motor cotrol
+
 */
 
 #endif

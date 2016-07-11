@@ -39,7 +39,7 @@ void Motor::readMotorsInputAndTurn(){
   
   //_testInputValues(x, y);
   
-	_figureOutDirectionEngine(x,y); // (upDown, leftRigh)
+	//_figureOutDirectionEngine(x,y); // (upDown, leftRigh)
 	
 }
 
@@ -158,7 +158,7 @@ void Motor::_figureOutDirectionEngine(int y, int x){
 		}
 	}
   
-  int mappedRight = map(_speedRightMotor,0, 100 , 0, 255);
+  int mappedRight = map(_speedRightMotor,0, 100 , 0, 128);
   //int mappedRight = map(_speedRightMotor,-100, 100 , 0, 255);
   
   Serial.print(_speedRightMotor);
@@ -168,7 +168,7 @@ void Motor::_figureOutDirectionEngine(int y, int x){
 
   //this is because currently we can't go backwards.
   //int mappedLeft = map(_speedLeftMotor, -100, 100 , 0, 255);
-  int mappedLeft = map(_speedLeftMotor, 0, 100 , 0, 255);
+  int mappedLeft = map(_speedLeftMotor, 0, 100 , 0, 128);
   Serial.print(_speedLeftMotor);
   Serial.print(" left Motor - Maped ");
   Serial.println(mappedLeft);

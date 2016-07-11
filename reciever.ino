@@ -18,11 +18,16 @@ void setup() {
   //port 2 - 7
   //ch   1 - 6
 
-  // ch 2 & 3 left analog stick
-  // ch 4 & 5 right analog stick
+  // ch 1 left and right on the left stick
+  // ch 2 oil spray
+  // ch 3 & 4 right analog stick
+  // ch 5 glowPlug / little top flipper right
+  // ch 6 submergin/ large left flipper
+
+ 
   
   motorMode.pins(4,5,10);
-  fireMode.pins(6);
+  fireMode.pins(3,6,7,8);
   submergingMode.pins(7);
   Serial.begin(9600);
 }

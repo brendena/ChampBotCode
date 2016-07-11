@@ -23,7 +23,7 @@ void Submerge::checkSubmerging()
 
   //_testInputValues(ch);
   
-  _checkSubmerginConditional(ch);
+  //_checkSubmerginConditional(ch);
 }
 
 void Submerge::_checkSubmerginConditional(int ch)

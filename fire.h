@@ -1,3 +1,4 @@
+
 #ifndef FIRE_H
 #define FIRE_H
 
@@ -8,7 +9,7 @@ class Fire : public Master
 {
   public:
     Fire ();
-    void pins (int glowPlug, int oilSpray);
+    void pins (int glowPlug, int oilSpray, int relayGlowPlug, int relayOilSpray);
     void checkFireSwitch();
     
   private:

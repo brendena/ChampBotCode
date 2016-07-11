@@ -1,4 +1,4 @@
-#include "fire.h"
+  #include "fire.h"
 
 Fire::Fire()
 {

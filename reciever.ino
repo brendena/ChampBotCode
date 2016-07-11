@@ -10,7 +10,7 @@
 Motor motorMode;
 Fire fireMode; 
 Submerge submergingMode; 
-
+Master masterSetup;
 
 
 void setup() {
@@ -24,18 +24,25 @@ void setup() {
   // ch 5 glowPlug / little top flipper right
   // ch 6 submergin/ large left flipper
 
- 
+  //shift register 7-10
   
   motorMode.pins(4,5,10);
   fireMode.pins(3,6,7,8);
   submergingMode.pins(7);
+  
+  //masterSetup.pins(7,8,9);
+
+  
   Serial.begin(9600);
 }
 
 void loop() { 
+  
   motorMode.readMotorsInputAndTurn();
   fireMode.checkFireSwitch();
   submergingMode.checkSubmerging();
+  
+  //masterSetup.cycleLoopSwitchRelay();
   delay(1000);
 }
 

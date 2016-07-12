@@ -18,6 +18,8 @@ class Master {
     bool returnSwitchValue(int x);
     void turnOnOffRelay(int changePin, int onOff); //array
     void cycleLoopSwitchRelay();
+
+    int DialValue(int value);
     
     void pins(int dataPin, int latchPin, int clockPin);
 

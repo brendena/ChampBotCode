@@ -18,6 +18,24 @@ void Master::pins(int dataPin, int latchPin, int clockPin)
   _SRClockPin = clockPin;
 }
 
+int Master::DialValue(int value)
+{
+  int returnValue;
+  if(value < 1300)
+  {
+    returnValue = 0;
+  }
+  else if(value > 1700)
+  {
+    returnValue = 1;
+  }
+  else 
+  {
+      returnValue = 2;
+  }
+  return returnValue;
+}
+
 /*
 Input 
 example
@@ -121,7 +139,7 @@ bool Master::marginError(int postion, int marginError){
 
 bool Master::returnSwitchValue(int x)
 {
-  if( x > 1500 )
+  if( x > 1600 )
   {
     return true;
   }

@@ -6,16 +6,20 @@ Fire::Fire()
 }
 
 void Fire::pins(int glowPlug, int oilSpray, int relayGlowPlug, int relayOilSpray )
-{
+{ 
   pinMode(glowPlug, INPUT);
   _glowPlug = glowPlug; 
   pinMode(oilSpray, INPUT);
   _oilSpray = oilSpray;
-  pinMode(_relayGlowPlug, OUTPUT);
+
+  
+  pinMode(relayGlowPlug, OUTPUT);
   _relayGlowPlug = relayGlowPlug;
-  pinMode(_relayOilSpray, OUTPUT);
+  pinMode(relayOilSpray, OUTPUT);
   _relayOilSpray = relayOilSpray;
+
 }
+
 
 void Fire::_testInputValues(int glow, int oil )
 {
@@ -33,7 +37,7 @@ void Fire::checkFireSwitch()
 
   int oilSprayRadioValue = pulseInPlus(_oilSpray);
   
-  _testInputValues(glowPlugRadioValue, oilSprayRadioValue);
+  //_testInputValues(glowPlugRadioValue, oilSprayRadioValue);
   
   _checkFireSwitchConditionals(glowPlugRadioValue, oilSprayRadioValue);
 }
@@ -46,21 +50,21 @@ void Fire::_checkFireSwitchConditionals(int glowPlugRadioValue, int  oilSprayRad
   if (glowPlug_switchValue  == true)
   {
     Serial.println("Glow plug Switch is on!");
-    digitalWrite(_relayGlowPlug, HIGH);
+    digitalWrite(8, LOW);
   }
   else
   {
     Serial.println("Fire Switch is off!");
-    digitalWrite(_relayGlowPlug, LOW);
+    digitalWrite(8, HIGH);
   }
 
   if(oilSpray_switchValue == true){
     Serial.println("Oil Switch is on!");
-    digitalWrite(_relayOilSpray, HIGH);
+    digitalWrite(9, LOW);
   }
   else{
     Serial.println("Oil Switch is off!");
-    digitalWrite(_relayOilSpray, LOW);
+    digitalWrite(9, HIGH);
   }
   
 }

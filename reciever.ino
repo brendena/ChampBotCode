@@ -7,10 +7,10 @@
 
 //each differnt section of the champ bot
 //is its own class and is a global object.
-Motor motorMode;
-Fire fireMode; 
+//Motor motorMode;
+//Fire fireMode; 
 Submerge submergingMode; 
-Master masterSetup;
+//Master masterSetup;
 
 
 void setup() {
@@ -26,9 +26,9 @@ void setup() {
 
   //shift register 7-10
   
-  motorMode.pins(4,5,10);
-  fireMode.pins(3,6,7,8);
-  submergingMode.pins(7);
+  //motorMode.pins(4,5,10);
+  //fireMode.pins(3,6,8,9);
+  submergingMode.pins(7,8,9,10,11);
   
   //masterSetup.pins(7,8,9);
 
@@ -38,11 +38,13 @@ void setup() {
 
 void loop() { 
   
-  motorMode.readMotorsInputAndTurn();
-  fireMode.checkFireSwitch();
+  //motorMode.readMotorsInputAndTurn();
+  //fireMode.checkFireSwitch();
   submergingMode.checkSubmerging();
   
   //masterSetup.cycleLoopSwitchRelay();
+
+  
   delay(1000);
 }
 

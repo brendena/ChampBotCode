@@ -8,15 +8,30 @@ class Submerge : public Master
 {
   public:
     Submerge ();
-    void pins (int pinNumber);
+    void pins (int submergeRadioPin, int modeDialPin,  int relayReleaseValve,  int relayInflateValve, int relayEmergencyValve);
     void checkSubmerging();
     
   private:
-    int _pin; //pin
+    int _submergeRadioPin; //pin
+    int _modeDialPin;
+
+    
+    int _relayReleaseValve;
+    int _relayInflateValve;
+    int _relayEmergencyValve;
+    
     unsigned long startTime, currentTime;
-    bool firstTime;
-    void _testInputValues(int x);
-    void _checkSubmerginConditional(int ch);
+    bool _firstTime;
+    void _testInputValues(int submerginValue, int modeDial );
+    void _checkSubmerginConditional(int submergeRadioValue, int modeDialValue);
+
+    int _inflated;
 };
+/*
+Notes
+When no power is given to the 
+relay that mean that the valves are closed
+
+*/
 
 #endif

@@ -25,7 +25,11 @@ class Submerge : public Master
     void _testInputValues(int submerginValue, int modeDial );
     void _checkSubmerginConditional(int submergeRadioValue, int modeDialValue);
 
-    int _inflated;
+    int _checkTimer();
+
+    int _inflated, _emergencyTimerValue;
+
+    bool _emergancyChecker;
 };
 /*
 Notes

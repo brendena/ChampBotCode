@@ -5,6 +5,7 @@ int Master::maxParametersMaped = 100;
 int Master::_mapedLowerBound = 1040;
 int Master::_mapedUpperBound = 1880;
 int Master::_shiftRegisterCurrentValue = 0;
+int Master::_shiftRegisterOriginalValue = 0;
 
 
 
@@ -16,6 +17,7 @@ void Master::pins(int dataPin, int latchPin, int clockPin)
   _SRLatchPin = latchPin;
   pinMode(clockPin, OUTPUT); 
   _SRClockPin = clockPin;
+  
 }
 
 int Master::DialValue(int value)
@@ -50,18 +52,27 @@ and turn off or on each of these pins individually
 void Master::turnOnOffRelay(int changePin, int onOff)
 {
 
-    //checking to see if it needs to be changed
-
-    // this will make the value 
-    changePin = 2 ^ changePin;
-    
+    changePin = 1 << ( changePin -1);
+    //changePin = 2 ^ changePin; 
+  
+    //Serial.println(" ");
+    //Serial.println(_shiftRegisterCurrentValue & changePin);  
     //checking to see active
-    if( _shiftRegisterCurrentValue & changePin != changePin)
+    if( (_shiftRegisterCurrentValue & changePin) == changePin)
     {
       //checking to see if you want to turn it off
       if(onOff == false)
       {
-        _shiftRegisterCurrentValue -  changePin;
+        /*
+        Serial.println(_shiftRegisterCurrentValue);
+        Serial.println(changePin);
+        Serial.println(" ");
+        Serial.println("{} ");
+        */
+        _shiftRegisterCurrentValue = _shiftRegisterCurrentValue - changePin;
+        Serial.println("_ ");
+        Serial.print("turning Off shift Register Current Value: ");
+        Serial.println(_shiftRegisterCurrentValue);
       }
     }
     //not active
@@ -70,20 +81,31 @@ void Master::turnOnOffRelay(int changePin, int onOff)
       //checking to see want turn it on
       if(onOff == true)
       {
-        _shiftRegisterCurrentValue + changePin;
+        /*
+        Serial.println(_shiftRegisterCurrentValue);
+        Serial.println(changePin);
+        Serial.println(" ");
+        Serial.println("{} ");
+        */
+        _shiftRegisterCurrentValue = _shiftRegisterCurrentValue + changePin;
+        Serial.println("_ ");
+        Serial.print("Turning on shift Register Current Value: ");
+        Serial.println(_shiftRegisterCurrentValue);
       }
     }
-  
+  Serial.println(" ");
 }
 
 /*
 every cycle there
 */
-void Master::cycleLoopSwitchRelay()
+void Master::cycleSwitchRelay()
 {
 
-  if(_shiftRegisterCurrentValue != _shiftRegisterCurrentValue)
+  if( _shiftRegisterCurrentValue != _shiftRegisterOriginalValue )
   {
+    Serial.println("__________shiftingBytes_________");
+    
     _shiftInBytes(_shiftRegisterCurrentValue);  
   }
   
@@ -95,9 +117,9 @@ void Master::cycleLoopSwitchRelay()
 }
 
 void Master::_shiftInBytes(int value) {
-  digitalWrite(_SRLatchPin, LOW); //Pulls the chips latch low
-  shiftOut(_SRDataPin, _SRClockPin, MSBFIRST, value); //Shifts out the 8 bits to the shift register
-  digitalWrite(_SRLatchPin, HIGH); //Pulls the latch high displaying the data
+  digitalWrite(_SRLatchPin, LOW);
+  shiftOut(_SRDataPin, _SRClockPin, MSBFIRST, value);  
+  digitalWrite(_SRLatchPin, HIGH);
 }
 
 int Master::pulseInPlus(int pin)
@@ -150,4 +172,77 @@ bool Master::returnSwitchValue(int x)
 }
 
 
+void Master::test(){
+  
+  for (int numberToDisplay = 1; numberToDisplay < 9; numberToDisplay++) {
+    _shiftInBytes(numberToDisplay);
+    /*
+    // take the latchPin low so 
+    // the LEDs don't change while you're sending in bits:
+    digitalWrite(_SRLatchPin, LOW);
+    // shift out the bits:
+    shiftOut(_SRDataPin, _SRClockPin, MSBFIRST, numberToDisplay);  
+
+    //take the latch pin high so the LEDs will light up:
+    digitalWrite(_SRLatchPin, HIGH);
+    // pause before next value:
+    */
+    delay(500);
+  }
+  
+}
+
+void Master::testShiftRegister()
+{
+      // send data only when you receive data:
+  //char bytes;
+
+  Serial.print("original shift register Value ");
+  Serial.println(_shiftRegisterOriginalValue, BIN);
+  Serial.print("Current shift register Value ");
+  Serial.println(_shiftRegisterCurrentValue, BIN);
+
+  
+  Serial.print("relay want to change ");
+  int relayChangeNumber;
+  while(Serial.available() <= 0){};
+  if (Serial.available() > 0) {
+          // read the incoming byte:
+          
+          char relayChange = Serial.read();
+          Serial.println(relayChange);
+
+          relayChangeNumber = (int)relayChange - 48;
+  }
+  Serial.print("turn Off On");
+
+  int turnOnOffValue;
+  
+  while(Serial.available() <= 0){};
+  if (Serial.available() > 0) {
+          Serial.print("turn Off On");
+          char onOff = Serial.read();
+          Serial.println(onOff);
+          
+
+          turnOnOffValue = (int)onOff - 48;
+
+  }  
+  turnOnOffRelay(relayChangeNumber, turnOnOffValue);  
+}
+
+void Master::resetRelayes()
+{
+  
+  for(int i=1; i<=8; i++)
+  {
+    Serial.print("Relay#");
+    Serial.print(i);
+    Serial.println(" is reseted");
+    turnOnOffRelay(i, 0);
+  }
+
+  _shiftInBytes(0);
+  
+}
 

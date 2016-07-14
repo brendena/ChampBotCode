@@ -50,21 +50,24 @@ void Fire::_checkFireSwitchConditionals(int glowPlugRadioValue, int  oilSprayRad
   if (glowPlug_switchValue  == true)
   {
     Serial.println("Glow plug Switch is on!");
-    digitalWrite(8, LOW);
+    turnOnOffRelay(8, 1);
+    //digitalWrite(8, LOW);
   }
   else
   {
     Serial.println("Fire Switch is off!");
-    digitalWrite(8, HIGH);
+    turnOnOffRelay(8, 0);
+    //digitalWrite(8, HIGH);
   }
 
   if(oilSpray_switchValue == true){
     Serial.println("Oil Switch is on!");
-    digitalWrite(9, LOW);
+    turnOnOffRelay(9, 1);
+    //digitalWrite(9, LOW);
   }
   else{
     Serial.println("Oil Switch is off!");
-    digitalWrite(9, HIGH);
-  }
-  
+    turnOnOffRelay(9, 0);
+    //digitalWrite(9, HIGH);
+  } 
 }

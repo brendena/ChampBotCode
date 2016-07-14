@@ -3,7 +3,7 @@
 Submerge::Submerge()
 {
   _emergancyChecker = false;
-  _emergencyTimerValue = 10000; //(20 sec)
+  _emergencyTimerValue = 60000; //(60 sec)
 }
 
 void Submerge::pins (int submergeRadioPin, int modeDialPin, int relayReleaseValve,  int relayInflateValve, int relayEmergencyValve)
@@ -66,14 +66,16 @@ void Submerge::_checkSubmerginConditional(int submergeValue, int modeDial)
       //diving mode
       else if(modeDialValue == 0)
       {
-        int timer = _checkTimer();
-        
-          if ( timer <= _emergencyTimerValue)
+          int emergencyTimer = _checkTimer();
+          //Serial.print(emergencyTimer);
+          //Serial.print(" <= " );
+          //Serial.println(_emergencyTimerValue);
+          if ( emergencyTimer <= _emergencyTimerValue)
           {
              Serial.println("Diving mode is on!");
-             digitalWrite(_relayReleaseValve, HIGH);
-             digitalWrite(_relayInflateValve, LOW);
-             digitalWrite(_relayEmergencyValve, LOW);
+             digitalWrite(_relayReleaseValve, LOW);
+             digitalWrite(_relayInflateValve, HIGH);
+             digitalWrite(_relayEmergencyValve, HIGH);
           }
           // Emergency!! turn off submerging mode  
           else
@@ -81,9 +83,9 @@ void Submerge::_checkSubmerginConditional(int submergeValue, int modeDial)
              _emergancyChecker = true;
              Serial.println("EMERGENCY!! Turned off Diving mode!");
              Serial.println("RISING MODE IS ON!!");
-             digitalWrite(_relayEmergencyValve, HIGH);
-             digitalWrite(_relayReleaseValve, LOW);
-             digitalWrite(_relayInflateValve, LOW);
+             digitalWrite(_relayEmergencyValve, LOW);
+             digitalWrite(_relayReleaseValve, HIGH);
+             digitalWrite(_relayInflateValve, HIGH);
           }
       }
 
@@ -97,8 +99,8 @@ void Submerge::_checkSubmerginConditional(int submergeValue, int modeDial)
   else
   {
     Serial.println("Submerging mode is off!");
-    digitalWrite(_relayReleaseValve, LOW);
-    digitalWrite(_relayInflateValve, LOW);
+    digitalWrite(_relayReleaseValve, HIGH);
+    digitalWrite(_relayInflateValve, HIGH);
     _firstTime = true;
   }
   

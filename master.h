@@ -5,6 +5,16 @@
 
 
 class Master {
+  public:
+  
+    void pins(int dataPin, int latchPin, int clockPin);
+    void cycleSwitchRelay();
+    void resetRelayes();
+    void turnOnOffRelay(int changePin, int onOff); //array
+    void test();
+    void testShiftRegister();
+
+    
 	protected:
 		int changeRange(int x);
 		bool marginError(int postion , int  marginError);
@@ -16,12 +26,12 @@ class Master {
     static int _mapedUpperBound; 
     
     bool returnSwitchValue(int x);
-    void turnOnOffRelay(int changePin, int onOff); //array
-    void cycleLoopSwitchRelay();
 
     int DialValue(int value);
     
-    void pins(int dataPin, int latchPin, int clockPin);
+    
+
+    
 
   private:
     static int _marginErrorNumber; 
@@ -29,9 +39,9 @@ class Master {
     static int _shiftRegisterCurrentValue;
     static int _shiftRegisterOriginalValue;
     
-    static int _SRDataPin; //SR - shift register
-    static int _SRLatchPin;
-    static int _SRClockPin;
+    int _SRDataPin; //SR - shift register
+    int _SRLatchPin;
+    int _SRClockPin;
     
     void _shiftInBytes(int bytes);
     

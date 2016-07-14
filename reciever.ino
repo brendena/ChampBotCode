@@ -7,10 +7,11 @@
 
 //each differnt section of the champ bot
 //is its own class and is a global object.
+
 //Motor motorMode;
-//Fire fireMode; 
-Submerge submergingMode; 
-//Master masterSetup;
+Fire fireMode; 
+//Submerge submergingMode; 
+Master masterSetup;
 
 
 void setup() {
@@ -28,23 +29,35 @@ void setup() {
   
   //motorMode.pins(4,5,10);
   //fireMode.pins(3,6,8,9);
-  submergingMode.pins(7,8,9,10,11);
-  
-  //masterSetup.pins(7,8,9);
+  //submergingMode.pins(7,9,10,11,12);
+
+
+  /*
+  So A0 - A5 pins get mapped to values
+  14 - 19
+  */
+  masterSetup.pins(A0,A1,A2);
 
   
   Serial.begin(9600);
+
+  
+  masterSetup.resetRelayes();
 }
 
 void loop() { 
   
   //motorMode.readMotorsInputAndTurn();
   //fireMode.checkFireSwitch();
-  submergingMode.checkSubmerging();
+  //submergingMode.checkSubmerging();
   
-  //masterSetup.cycleLoopSwitchRelay();
-
+  /*
+  masterSetup.testShiftRegister();
   
-  delay(1000);
+  masterSetup.cycleSwitchRelay();
+  /*/
+  //masterSetup.test();
+  
+  
 }
 

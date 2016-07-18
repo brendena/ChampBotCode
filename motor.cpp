@@ -16,7 +16,7 @@ void Motor::_testInputValues(int upDown, int leftRight){
 }
 
 
-void Motor::pins(int xPin, int yPin, int slavePin)
+void Motor::pins(int xPin, int yPin, int slavePin, int leftMotorRelay, int rightMotorRelay)
 {
   pinMode(xPin, INPUT);
   _xPin = xPin;
@@ -24,6 +24,9 @@ void Motor::pins(int xPin, int yPin, int slavePin)
   _yPin = yPin;
   pinMode(slavePin, OUTPUT);
   _slavePin = slavePin;
+
+  _leftMotorRelay = leftMotorRelay;
+  _rightMotorRelay = rightMotorRelay;
 
     // initialize SPI:
   SPI.begin();
@@ -77,13 +80,13 @@ void Motor::_figureOutDirectionEngine(int y, int x){
 	if(marginError(y,_marginErrorNumber)){
 	        //left donut
 		if(x <= 0){
-			_speedLeftMotor = 0;
+			_speedLeftMotor = -abs(x);
 			_speedRightMotor = abs(x);
 		}
 		//right donut
 		else {
 			_speedLeftMotor = abs(x);
-			_speedRightMotor = 0;
+			_speedRightMotor = -abs(x);
 		}
 	}
         //margin error y plan
@@ -157,18 +160,26 @@ void Motor::_figureOutDirectionEngine(int y, int x){
 			}
 		}
 	}
+
+  /*
+  1. this turn on or off relays if there going backwards or forwards
+  2. it mappes speeds of the motors to -128 and 128 because the speed goes up logorithmicals so the space
+  between 128 256 doesn't do much
+  3. then we abs the speeds to the pots because they can't handle the nagative values, but we have to map negative
+  values because if we don't the mapping of the values will be off. 
   
-  int mappedRight = map(_speedRightMotor,0, 100 , 0, 128);
-  //int mappedRight = map(_speedRightMotor,-100, 100 , 0, 255);
+  */
+  _relaySwitches();
+
   
+  int mappedRight = map(_speedRightMotor,0, 100 , -128, 128);
+
   Serial.print(_speedRightMotor);
   Serial.print(" right Motor - Maped ");
   Serial.println(mappedRight);
 
 
-  //this is because currently we can't go backwards.
-  //int mappedLeft = map(_speedLeftMotor, -100, 100 , 0, 255);
-  int mappedLeft = map(_speedLeftMotor, 0, 100 , 0, 128);
+  int mappedLeft = map(_speedLeftMotor, 0, 100 , -128, 128);
   Serial.print(_speedLeftMotor);
   Serial.print(" left Motor - Maped ");
   Serial.println(mappedLeft);
@@ -179,6 +190,27 @@ void Motor::_figureOutDirectionEngine(int y, int x){
 
   delay(100);
 
+}
+
+void Motor::_relaySwitches()
+{
+  if(_speedLeftMotor < 0)
+  {
+    turnOnOffRelay(_speedLeftMotor ,1);
+  }
+  else
+  {
+    turnOnOffRelay(_speedLeftMotor ,0);
+  }
+
+  if(_speedRightMotor < 0)
+  {
+    turnOnOffRelay(_speedRightMotor ,1);
+  }
+  else
+  {
+    turnOnOffRelay(_speedRightMotor ,0);
+  }
 }
 
 void Motor::_digitalPotWrite(int address, int value){

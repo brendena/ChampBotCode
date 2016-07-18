@@ -8,7 +8,7 @@
 //each differnt section of the champ bot
 //is its own class and is a global object.
 
-//Motor motorMode;
+Motor motorMode;
 Fire fireMode; 
 Submerge submergingMode; 
 Master masterSetup;
@@ -27,9 +27,9 @@ void setup() {
 
   //shift register 7-10
   
-  //motorMode.pins(4,5,10);
-  fireMode.pins(3,6,1,2);
-  submergingMode.pins(7,9,3,4,5);
+  motorMode.pins(4,5,10,1,2);
+  fireMode.pins(3,6,3,4);
+  submergingMode.pins(7,9,3,5,6);
 
 
   /*

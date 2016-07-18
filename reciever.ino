@@ -10,7 +10,7 @@
 
 //Motor motorMode;
 Fire fireMode; 
-//Submerge submergingMode; 
+Submerge submergingMode; 
 Master masterSetup;
 
 
@@ -28,8 +28,8 @@ void setup() {
   //shift register 7-10
   
   //motorMode.pins(4,5,10);
-  //fireMode.pins(3,6,8,9);
-  //submergingMode.pins(7,9,10,11,12);
+  fireMode.pins(3,6,1,2);
+  submergingMode.pins(7,9,3,4,5);
 
 
   /*
@@ -48,15 +48,18 @@ void setup() {
 void loop() { 
   
   //motorMode.readMotorsInputAndTurn();
-  //fireMode.checkFireSwitch();
-  //submergingMode.checkSubmerging();
+  fireMode.checkFireSwitch();
+  submergingMode.checkSubmerging();
   
   /*
   masterSetup.testShiftRegister();
+  masterSetup.testShiftRegister();
+  masterSetup.testShiftRegister();
+  */
   
   masterSetup.cycleSwitchRelay();
-  /*/
-  //masterSetup.test();
+  
+  delay(1000);
   
   
 }

@@ -55,20 +55,14 @@ void Master::turnOnOffRelay(int changePin, int onOff)
     changePin = 1 << ( changePin -1);
     //changePin = 2 ^ changePin; 
   
-    //Serial.println(" ");
-    //Serial.println(_shiftRegisterCurrentValue & changePin);  
+    Serial.println(" ");
+    Serial.println(_shiftRegisterCurrentValue & changePin);  
     //checking to see active
     if( (_shiftRegisterCurrentValue & changePin) == changePin)
     {
       //checking to see if you want to turn it off
       if(onOff == false)
       {
-        /*
-        Serial.println(_shiftRegisterCurrentValue);
-        Serial.println(changePin);
-        Serial.println(" ");
-        Serial.println("{} ");
-        */
         _shiftRegisterCurrentValue = _shiftRegisterCurrentValue - changePin;
         Serial.println("_ ");
         Serial.print("turning Off shift Register Current Value: ");
@@ -81,12 +75,6 @@ void Master::turnOnOffRelay(int changePin, int onOff)
       //checking to see want turn it on
       if(onOff == true)
       {
-        /*
-        Serial.println(_shiftRegisterCurrentValue);
-        Serial.println(changePin);
-        Serial.println(" ");
-        Serial.println("{} ");
-        */
         _shiftRegisterCurrentValue = _shiftRegisterCurrentValue + changePin;
         Serial.println("_ ");
         Serial.print("Turning on shift Register Current Value: ");
@@ -108,7 +96,7 @@ void Master::cycleSwitchRelay()
     
     _shiftInBytes(_shiftRegisterCurrentValue);  
   }
-  
+  Serial.println("cycle");
   _shiftRegisterOriginalValue = _shiftRegisterCurrentValue;
   /* 
   i want it to check to see if it's changed so i don't have to keep wrighting
@@ -117,6 +105,9 @@ void Master::cycleSwitchRelay()
 }
 
 void Master::_shiftInBytes(int value) {
+  Serial.print("shift in  ");
+  Serial.println(value);
+  
   digitalWrite(_SRLatchPin, LOW);
   shiftOut(_SRDataPin, _SRClockPin, MSBFIRST, value);  
   digitalWrite(_SRLatchPin, HIGH);
@@ -172,25 +163,11 @@ bool Master::returnSwitchValue(int x)
 }
 
 
-void Master::test(){
-  
-  for (int numberToDisplay = 1; numberToDisplay < 9; numberToDisplay++) {
-    _shiftInBytes(numberToDisplay);
-    /*
-    // take the latchPin low so 
-    // the LEDs don't change while you're sending in bits:
-    digitalWrite(_SRLatchPin, LOW);
-    // shift out the bits:
-    shiftOut(_SRDataPin, _SRClockPin, MSBFIRST, numberToDisplay);  
-
-    //take the latch pin high so the LEDs will light up:
-    digitalWrite(_SRLatchPin, HIGH);
-    // pause before next value:
-    */
-    delay(500);
-  }
-  
-}
+/*
+TestShiftRegister
+has two inputs statements asking
+for pins and if its on or off 
+*/
 
 void Master::testShiftRegister()
 {
@@ -233,16 +210,9 @@ void Master::testShiftRegister()
 
 void Master::resetRelayes()
 {
-  
-  for(int i=1; i<=8; i++)
-  {
-    Serial.print("Relay#");
-    Serial.print(i);
-    Serial.println(" is reseted");
-    turnOnOffRelay(i, 0);
-  }
-
-  _shiftInBytes(0);
-  
+  _shiftRegisterCurrentValue = 0;
+  _shiftRegisterOriginalValue = 0;
+  _shiftInBytes(0); 
 }
+
 

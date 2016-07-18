@@ -11,20 +11,24 @@ class Master {
     void cycleSwitchRelay();
     void resetRelayes();
     void turnOnOffRelay(int changePin, int onOff); //array
-    void test();
+
+    
     void testShiftRegister();
+    
 
     
 	protected:
+    static int minParametersMaped;
+    static int maxParametersMaped;
+    static int _mapedLowerBound; 
+    static int _mapedUpperBound;
+		
 		int changeRange(int x);
+
 		bool marginError(int postion , int  marginError);
-		static int minParametersMaped;
-		static int maxParametersMaped;
+
     int pulseInPlus(int pin);
 
-    static int _mapedLowerBound; 
-    static int _mapedUpperBound; 
-    
     bool returnSwitchValue(int x);
 
     int DialValue(int value);

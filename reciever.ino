@@ -31,7 +31,7 @@ void setup() {
   
   //motorMode.pins(4,5,10,1,2);
   //fireMode.pins(3,6,3,4);
-  //submergingMode.pins(7,9,5,6,7);
+  submergingMode.pins(7,9,5,6,7);
   headRotationMode.pins(2,A3,A4);
 
 
@@ -52,7 +52,7 @@ void loop() {
   
   //motorMode.readMotorsInputAndTurn();
   //fireMode.checkFireSwitch();
-  //submergingMode.checkSubmerging();
+  submergingMode.checkSubmerging();
   headRotationMode.checkHeadRotation();
   
   
@@ -62,7 +62,7 @@ void loop() {
   //masterSetup.testShiftRegister();
   */
   
-  //masterSetup.cycleSwitchRelay();
+  masterSetup.cycleSwitchRelay();
   
   delay(1000);
   

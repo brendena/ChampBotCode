@@ -3,7 +3,7 @@
 Submerge::Submerge()
 {
   _emergancyChecker = false;
-  _emergencyTimerValue = 60000; //(60 sec)
+  _emergencyTimerValue = 600000; //(60 sec)
 }
 
 void Submerge::pins (int submergeRadioPin, int modeDialPin, int relayReleaseValve,  int relayInflateValve, int relayEmergencyValve)

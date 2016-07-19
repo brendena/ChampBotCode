@@ -24,7 +24,12 @@ void Master::pins(int dataPin, int latchPin, int clockPin)
 int Master::DialValue(int value)
 {
   int returnValue;
-  if(value < 1300)
+  
+  if (value == 0)
+  {
+    returnValue = 2;  
+  }
+  else if(value < 1300)
   {
     returnValue = 0;
   }

@@ -196,20 +196,20 @@ void Motor::_relaySwitches()
 {
   if(_speedLeftMotor < 0)
   {
-    turnOnOffRelay(_speedLeftMotor ,1);
+    turnOnOffRelay(_speedLeftMotor ,0);
   }
   else
   {
-    turnOnOffRelay(_speedLeftMotor ,0);
+    turnOnOffRelay(_speedLeftMotor ,1);
   }
 
   if(_speedRightMotor < 0)
   {
-    turnOnOffRelay(_speedRightMotor ,1);
+    turnOnOffRelay(_speedRightMotor ,0);
   }
   else
   {
-    turnOnOffRelay(_speedRightMotor ,0);
+    turnOnOffRelay(_speedRightMotor ,1);
   }
 }
 

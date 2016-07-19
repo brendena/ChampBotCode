@@ -57,8 +57,8 @@ void Submerge::_checkSubmerginConditional(int submergeValue, int modeDial)
       {
         
         Serial.println("Rising mode is on!");
-        turnOnOffRelay(_relayReleaseValve, HIGH);
-        turnOnOffRelay(_relayInflateValve, LOW);
+        turnOnOffRelay(_relayReleaseValve, 1);
+        turnOnOffRelay(_relayInflateValve, 0);
       }
       //diving mode
       else if(modeDialValue == 0)
@@ -70,19 +70,19 @@ void Submerge::_checkSubmerginConditional(int submergeValue, int modeDial)
           if ( emergencyTimer <= _emergencyTimerValue)
           {
              Serial.println("Diving mode is on!");
-             turnOnOffRelay(_relayReleaseValve, LOW);
-             turnOnOffRelay(_relayInflateValve, HIGH);
-             turnOnOffRelay(_relayEmergencyValve, HIGH);
+             turnOnOffRelay(_relayReleaseValve, 0);
+             turnOnOffRelay(_relayInflateValve, 1);
+             turnOnOffRelay(_relayEmergencyValve, 1);
           }
-          // Emergency!! turn off submerging mode  
+          // Emergency Mode  
           else
           {
              _emergancyChecker = true;
              Serial.println("EMERGENCY!! Turned off Diving mode!");
              Serial.println("RISING MODE IS ON!!");
-             turnOnOffRelay(_relayEmergencyValve, LOW);
-             turnOnOffRelay(_relayReleaseValve, HIGH);
-             turnOnOffRelay(_relayInflateValve, HIGH);
+             turnOnOffRelay(_relayEmergencyValve, 0);
+             turnOnOffRelay(_relayReleaseValve, 1);
+             turnOnOffRelay(_relayInflateValve, 1);
           }
       }
 
@@ -96,8 +96,8 @@ void Submerge::_checkSubmerginConditional(int submergeValue, int modeDial)
   else
   {
     Serial.println("Submerging mode is off!");
-    turnOnOffRelay(_relayReleaseValve, HIGH);
-    turnOnOffRelay(_relayInflateValve, HIGH);
+    turnOnOffRelay(_relayReleaseValve, 1);
+    turnOnOffRelay(_relayInflateValve, 1);
     _firstTime = true;
   }
   

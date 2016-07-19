@@ -6,6 +6,7 @@ int Master::_mapedLowerBound = 1040;
 int Master::_mapedUpperBound = 1880;
 int Master::_shiftRegisterCurrentValue = 0;
 int Master::_shiftRegisterOriginalValue = 0;
+int Master::_shiftRegisterMaxValue = 255;
 
 
 
@@ -210,9 +211,9 @@ void Master::testShiftRegister()
 
 void Master::resetRelayes()
 {
-  _shiftRegisterCurrentValue = 0;
-  _shiftRegisterOriginalValue = 0;
-  _shiftInBytes(0); 
+  _shiftRegisterCurrentValue = _shiftRegisterMaxValue;
+  _shiftRegisterOriginalValue = _shiftRegisterMaxValue;
+  _shiftInBytes(_shiftRegisterMaxValue); 
 }
 
 

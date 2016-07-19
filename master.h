@@ -38,7 +38,8 @@ class Master {
     
 
   private:
-    static int _marginErrorNumber; 
+    static int _marginErrorNumber;
+    static int _shiftRegisterMaxValue;
     
     static int _shiftRegisterCurrentValue;
     static int _shiftRegisterOriginalValue;

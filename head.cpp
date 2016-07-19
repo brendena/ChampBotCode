@@ -7,6 +7,9 @@ Head::Head()
 
 void Head::pins(int channelPin, int relayUpDownRotation, int relayOnOffRotation)
 { 
+   pinMode(channelPin, INPUT);
+  _channelPin = channelPin; 
+  
    pinMode(relayUpDownRotation, OUTPUT);
   _relayUpDownRotation = relayUpDownRotation; 
 
@@ -16,11 +19,8 @@ void Head::pins(int channelPin, int relayUpDownRotation, int relayOnOffRotation)
 }
 
 
-void Head::_testInputValues(int UpDownRotationValue, int OnOffRotationValue)
+void Head::_testInputValues(int UpDownRotationValue)
 {
-  Serial.print("DC on-Off value: ");
-  Serial.println(OnOffRotationValue);
-
   Serial.print("DC Rotating @ value: ");
   Serial.println(UpDownRotationValue);
 
@@ -28,8 +28,8 @@ void Head::_testInputValues(int UpDownRotationValue, int OnOffRotationValue)
 
 void Head::checkHeadRotation()
 {
-  //mode 0 = up | Clock wise motion
-  //mode 1 = down | Anti Clock-wise motion
+  //mode 0 = down | Counter-Clockwise motion
+  //mode 1 = up | Clockwise motion
   //mode 2 = nothing | brake
 
   /*
@@ -38,34 +38,32 @@ void Head::checkHeadRotation()
   !!!!!!!!!!!!!!!!!!!!!!
   */
   
-  int UpDownRotationValue = pulseInPlus(_relayUpDownRotation);
-
-  int OnOffRotationValue = pulseInPlus(_relayOnOffRotation);
+  int UpDownRotationValue = pulseInPlus(_channelPin);
   
-  _testInputValues(UpDownRotationValue, OnOffRotationValue);
+  //_testInputValues(UpDownRotationValue);
  
-  //_checkRotationConditionals(UpDownRotationValue, OnOffRotationValue);
+  _checkRotationConditionals(UpDownRotationValue);
 }
 
-void Head::_checkRotationConditionals(int UpDownRotationValue, int OnOffRotationValue)
+void Head::_checkRotationConditionals(int UpDownRotationValue)
 {
   int mode = DialValue(UpDownRotationValue);
   
   if(mode == 0)
   {
-      Serial.println("Moving The Head Up!");
-      
-      //For Clock wise motion, moving the head up
-      digitalWrite(_relayOnOffRotation,LOW) ;
-      digitalWrite(_relayUpDownRotation,LOW) ;
+      //For Anti Clock-wise motion, moving the head down 
+       
+      Serial.println("Moving The Head Down!"); 
+      digitalWrite(_relayOnOffRotation,0) ;
+      digitalWrite(_relayUpDownRotation,1) ;
   }
   else if(mode == 1)
   {
-      Serial.println("Moving The Head Down!");
-    
-      //For Anti Clock-wise motion, moving the head down
-      digitalWrite(_relayOnOffRotation,LOW) ;
-      digitalWrite(_relayUpDownRotation,HIGH) ;
+      //For Clock wise motion, moving the head up
+
+      Serial.println("Moving The Head Up!");
+      digitalWrite(_relayOnOffRotation,0) ;
+      digitalWrite(_relayUpDownRotation,0) ;
   }
   //mode 2 nothing
   else
@@ -73,8 +71,8 @@ void Head::_checkRotationConditionals(int UpDownRotationValue, int OnOffRotation
       Serial.println("Head is Not Moving!");
     
       //For brake
-      digitalWrite(_relayOnOffRotation,HIGH) ;
-      digitalWrite(_relayUpDownRotation,HIGH) ;  
+      digitalWrite(_relayOnOffRotation,1) ;
+      digitalWrite(_relayUpDownRotation,1) ;  
   }
 }
 

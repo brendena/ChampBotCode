@@ -10,9 +10,10 @@ class Head : public Master
    private:
     int _relayUpDownRotation; // up-Down relay 
     int _relayOnOffRotation;  // On-Off relay
+    int _channelPin;
     
-    void _testInputValues(int UpDownRotationValue, int OnOffRotationValue);
-    void _checkRotationConditionals(int UpDownRotationValue, int OnOffRotationValue);
+    void _testInputValues(int UpDownRotationValue);
+    void _checkRotationConditionals(int UpDownRotationValue);
     
   public:
     Head ();

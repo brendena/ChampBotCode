@@ -2,6 +2,7 @@
 #include "header.h"
 #include "submerge.h"
 #include "fire.h"
+#include "head.h"
 
 
 
@@ -11,6 +12,7 @@
 Motor motorMode;
 Fire fireMode; 
 Submerge submergingMode; 
+Head headRotationMode;
 Master masterSetup;
 
 
@@ -27,9 +29,10 @@ void setup() {
 
   //shift register 7-10
   
-  motorMode.pins(4,5,10,1,2);
+  //motorMode.pins(4,5,10,1,2);
   fireMode.pins(3,6,3,4);
-  submergingMode.pins(7,9,3,5,6);
+  //submergingMode.pins(7,9,3,5,6);
+  //headRotationMode.pins(2,A3,A4);
 
 
   /*
@@ -49,7 +52,9 @@ void loop() {
   
   //motorMode.readMotorsInputAndTurn();
   fireMode.checkFireSwitch();
-  submergingMode.checkSubmerging();
+  //submergingMode.checkSubmerging();
+  //headRotationMode.checkHeadRotation();
+  
   
   /*
   masterSetup.testShiftRegister();
@@ -59,7 +64,7 @@ void loop() {
   
   masterSetup.cycleSwitchRelay();
   
-  delay(1000);
+  //delay(1000);
   
   
 }

@@ -3,7 +3,10 @@
 Submerge::Submerge()
 {
   _emergancyChecker = false;
-  _emergencyTimerValue = 600000; //(60 sec)
+  _inflatingChecker = false;
+  _emergencyTimerValue = 60000; //(60 sec)
+  _inflatingTimerValue = 5000; //(5 sec)
+  _timer = 0;
 }
 
 void Submerge::pins (int submergeRadioPin, int modeDialPin, int relayReleaseValve,  int relayInflateValve, int relayEmergencyValve)
@@ -20,8 +23,8 @@ void Submerge::pins (int submergeRadioPin, int modeDialPin, int relayReleaseValv
   
   _relayEmergencyValve = relayEmergencyValve;
   
-  _firstTime = true;
-  _inflated = true;
+  _firstTimeSubmerging = true;
+  _firstTimeInflating = true;
 }
 
 void Submerge::_testInputValues(int submerginValue, int modeDial )
@@ -55,15 +58,26 @@ void Submerge::_checkSubmerginConditional(int submergeValue, int modeDial)
       //rising mode
       if(modeDialValue == 1)
       {
+        int inflatingTimer = _checkTimer(_firstTimeInflating);
         
-        Serial.println("Rising mode is on!");
-        turnOnOffRelay(_relayReleaseValve, 1);
-        turnOnOffRelay(_relayInflateValve, 0);
+        if ( inflatingTimer <= _inflatingTimerValue)
+        {
+          Serial.println("Rising mode is on!");
+          turnOnOffRelay(_relayReleaseValve, 1);
+          turnOnOffRelay(_relayInflateValve, 0);
+        }
+        else
+        {
+          _inflatingChecker = true;
+          Serial.println("Inflating Done!!");
+          turnOnOffRelay(_relayReleaseValve, 1);
+          turnOnOffRelay(_relayInflateValve, 1);
+        }
       }
       //diving mode
       else if(modeDialValue == 0)
       {
-          int emergencyTimer = _checkTimer();
+          int emergencyTimer = _checkTimer(_firstTimeSubmerging);
           //Serial.print(emergencyTimer);
           //Serial.print(" <= " );
           //Serial.println(_emergencyTimerValue);
@@ -90,35 +104,46 @@ void Submerge::_checkSubmerginConditional(int submergeValue, int modeDial)
       else
       {
         Serial.println("inbetween Modes nothing happens");
+
+        // reseting timer's indicators
+        _startTime = millis();
+        _firstTimeSubmerging = true;
+        _firstTimeInflating = true;
+      
       }
-      _firstTime = false;
+      _firstTimeSubmerging = false;
+      _firstTimeInflating = false;
   }
   else
   {
     Serial.println("Submerging mode is off!");
     turnOnOffRelay(_relayReleaseValve, 1);
     turnOnOffRelay(_relayInflateValve, 1);
-    _firstTime = true;
+
+    // reseting timer's indicators
+    _timer = 0;
+    _startTime = millis();
+    _firstTimeSubmerging = true;
+    _firstTimeInflating = true;
   }
   
 }
 
-int Submerge::_checkTimer()
+unsigned long Submerge::_checkTimer(bool& firstTimeIndicator)
 {
-  int timer = 0;
-  if(_firstTime)
+  _timer = 0;
+  if(firstTimeIndicator)
   {
-    Serial.println("Start Submerging timer");
-    startTime = millis();
-    _firstTime = false;
+    Serial.println("Starting Timer");
+    _startTime = millis();
   }
   else
   {
-    currentTime = millis();
-    timer = currentTime - startTime;
+    _currentTime = millis();
+    _timer = _currentTime - _startTime;
     Serial.print("Timer: ");
-    Serial.println(timer / 1000 );
+    Serial.println(_timer / 1000 );
   }
-  return timer;
+  return _timer;
 }
 

@@ -61,8 +61,8 @@ void Master::turnOnOffRelay(int changePin, int onOff)
     changePin = 1 << ( changePin -1);
     //changePin = 2 ^ changePin; 
   
-    Serial.println(" ");
-    Serial.println(_shiftRegisterCurrentValue & changePin);  
+    //Serial.println(" ");
+    //Serial.println(_shiftRegisterCurrentValue & changePin);  
     //checking to see active
     if( (_shiftRegisterCurrentValue & changePin) == changePin)
     {
@@ -70,7 +70,7 @@ void Master::turnOnOffRelay(int changePin, int onOff)
       if(onOff == false)
       {
         _shiftRegisterCurrentValue = _shiftRegisterCurrentValue - changePin;
-        Serial.println("_ ");
+        //Serial.println("_ ");
         Serial.print("turning Off shift Register Current Value: ");
         Serial.println(_shiftRegisterCurrentValue);
       }
@@ -102,7 +102,7 @@ void Master::cycleSwitchRelay()
     
     _shiftInBytes(_shiftRegisterCurrentValue);  
   }
-  Serial.println("cycle");
+  //Serial.println("cycle");
   _shiftRegisterOriginalValue = _shiftRegisterCurrentValue;
   /* 
   i want it to check to see if it's changed so i don't have to keep wrighting

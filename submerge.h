@@ -20,16 +20,13 @@ class Submerge : public Master
     int _relayInflateValve;
     int _relayEmergencyValve;
     
-    unsigned long startTime, currentTime, _emergencyTimerValue;
-    bool _firstTime;
+    unsigned long _timer, _startTime, _currentTime, _emergencyTimerValue, _inflatingTimerValue;
+    bool _firstTimeSubmerging, _firstTimeInflating;
     void _testInputValues(int submerginValue, int modeDial );
     void _checkSubmerginConditional(int submergeRadioValue, int modeDialValue);
 
-    int _checkTimer();
-
-    int _inflated;
-
-    bool _emergancyChecker;
+    unsigned long _checkTimer(bool& firstTimeIndicator);
+    bool _emergancyChecker, _inflatingChecker;
 };
 /*
 Notes

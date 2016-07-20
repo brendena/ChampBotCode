@@ -31,7 +31,9 @@ void setup() {
   
   //motorMode.pins(4,5,10,1,2);
   //fireMode.pins(3,6,3,4);
-  submergingMode.pins(7,9,5,6,7);
+  //7,8,9 input
+  //5,6,7,8, outputs
+  submergingMode.pins(7,8,9,5,6,7,8);
   //headRotationMode.pins(2,A3,A4);
 
 

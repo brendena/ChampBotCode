@@ -8,25 +8,29 @@ class Submerge : public Master
 {
   public:
     Submerge ();
-    void pins (int submergeRadioPin, int modeDialPin,  int relayReleaseValve,  int relayInflateValve, int relayEmergencyValve);
+    void pins (int submergeRadioPin, int modeDialPin, int e_modeDialPin ,  
+               int relayReleaseValve, int relayInflateValve, int e_relayReleaseValve, int e_relayInflateValve);
     void checkSubmerging();
     
   private:
     int _submergeRadioPin; //pin
-    int _modeDialPin;
+    int _modeDialPin, _e_modeDialPin;
 
     
     int _relayReleaseValve;
     int _relayInflateValve;
-    int _relayEmergencyValve;
+
+    // emergency system
+    int _e_relayReleaseValve;
+    int _e_relayInflateValve;
     
-    unsigned long _timer, _startTime, _currentTime, _emergencyTimerValue, _inflatingTimerValue;
-    bool _firstTimeSubmerging, _firstTimeInflating;
-    void _testInputValues(int submerginValue, int modeDial );
-    void _checkSubmerginConditional(int submergeRadioValue, int modeDialValue);
+    unsigned long _timer, _startTime, _currentTime, _emergencyTimerValue, _inflatingTimerValue, _emergencyInflatingTimerValue;
+    bool _firstTimeSubmerging, _firstTimeInflating, _firstTimeEmergencyInflating;
+    void _testInputValues(int submerginValue, int modeDialValue, int e_modeDialValue );
+    void _checkSubmerginConditional(int submergeRadioValue, int modeDial, int e_modeDial);
 
     unsigned long _checkTimer(bool& firstTimeIndicator);
-    bool _emergancyChecker, _inflatingChecker;
+    bool _emergancyChecker, _inflatingChecker, _emergencyInflatingChecker;
 };
 /*
 Notes

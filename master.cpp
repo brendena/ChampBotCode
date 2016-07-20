@@ -71,8 +71,8 @@ void Master::turnOnOffRelay(int changePin, int onOff)
       {
         _shiftRegisterCurrentValue = _shiftRegisterCurrentValue - changePin;
         //Serial.println("_ ");
-        Serial.print("turning Off shift Register Current Value: ");
-        Serial.println(_shiftRegisterCurrentValue);
+        //Serial.print("turning Off shift Register Current Value: ");
+        //Serial.println(_shiftRegisterCurrentValue);
       }
     }
     //not active
@@ -82,9 +82,9 @@ void Master::turnOnOffRelay(int changePin, int onOff)
       if(onOff == true)
       {
         _shiftRegisterCurrentValue = _shiftRegisterCurrentValue + changePin;
-        Serial.println("_ ");
-        Serial.print("Turning on shift Register Current Value: ");
-        Serial.println(_shiftRegisterCurrentValue);
+        //Serial.println("_ ");
+        //Serial.print("Turning on shift Register Current Value: ");
+        //Serial.println(_shiftRegisterCurrentValue);
       }
     }
   Serial.println(" ");

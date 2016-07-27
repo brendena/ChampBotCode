@@ -11,6 +11,7 @@ class Master {
     void cycleSwitchRelay();
     void resetRelayes();
     void turnOnOffRelay(int changePin, int onOff); //array
+  
 
     
     void testShiftRegister();

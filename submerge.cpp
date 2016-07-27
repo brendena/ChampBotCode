@@ -5,8 +5,8 @@ Submerge::Submerge()
   _emergancyChecker = false;
   _inflatingChecker = false;
   _emergencyTimerValue = 60000; //(60 sec)
-  _inflatingTimerValue = 5000; //(5 sec)
-  _emergencyInflatingTimerValue = 3000; //(3 sec)
+  _inflatingTimerValue = 3000; //(3 sec)
+  _emergencyInflatingTimerValue = 2000; //(2 sec)
   _timer = 0;
 }
 

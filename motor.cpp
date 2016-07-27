@@ -42,12 +42,20 @@ void Motor::readMotorsInputAndTurn(){
   
   //_testInputValues(x, y);
   
-	//_figureOutDirectionEngine(x,y); // (upDown, leftRigh)
+	_figureOutDirectionEngine(x,y); // (upDown, leftRigh)
 	
 }
 
 void Motor::_figureOutDirectionEngine(int y, int x){
-	
+
+  // When there is no signal turn off motors
+  if(y == 0 )
+  {
+    _digitalPotWrite(0,0);
+    _digitalPotWrite(1,0);
+    return;
+  }
+  
 	//example what this is doing
 	/*
 	x and y are mapped between 0  and 100
@@ -63,22 +71,37 @@ void Motor::_figureOutDirectionEngine(int y, int x){
 	
 	*/
  
-
+  //Serial.println(x);
 	y = changeRange(y);
 	x = changeRange(x);
-
+ 
+  
+  
+  
+  //Serial.println(x);
+  
   y = (y - maxParametersMaped/2) *2;
 	x = (x - maxParametersMaped/2) *2;
-	
+  
+  // I HATE THIS >...
+  y =  - y; 
+	//Serial.println(x);
  
         
-        Serial.println("\n\n");
-        
-        //delay(2000);
-
-	//donuts
-	if(marginError(y,_marginErrorNumber)){
-	        //left donut
+  Serial.println("\n\n");
+  
+  //delay(2000);
+  
+  //checking marginError on both x and y will create circle for the center.
+  if( (marginError(x,_marginErrorNumber)) && (marginError(y,_marginErrorNumber)) )
+  {
+      _speedLeftMotor = 0;
+      _speedRightMotor = 0;
+  }
+  //donuts
+	else if(marginError(y,_marginErrorNumber))
+	{ 
+	  //left donut
 		if(x <= 0){
 			_speedLeftMotor = -abs(x);
 			_speedRightMotor = abs(x);
@@ -88,18 +111,15 @@ void Motor::_figureOutDirectionEngine(int y, int x){
 			_speedLeftMotor = abs(x);
 			_speedRightMotor = -abs(x);
 		}
+	
 	}
-        //margin error y plan
-        
-        else if(marginError(x,_marginErrorNumber)){
-	        // going Forward
+  // Going Forward & Backward
+  else if(marginError(x,_marginErrorNumber))
+  {
+    _speedLeftMotor = y;
+    _speedRightMotor = y;
                
-		        _speedLeftMotor = y;
-	          _speedRightMotor = y;
-               
-		// going backward
-	}
-
+  }
 	else{
 		//So the idea is to mimic a joystick that is found on a playstation controller.
 		/*
@@ -169,17 +189,18 @@ void Motor::_figureOutDirectionEngine(int y, int x){
   values because if we don't the mapping of the values will be off. 
   
   */
+
   _relaySwitches();
 
   
-  int mappedRight = map(_speedRightMotor,0, 100 , -128, 128);
+  int mappedRight = map(_speedRightMotor,-100, 100 , -128, 128);
 
   Serial.print(_speedRightMotor);
   Serial.print(" right Motor - Maped ");
   Serial.println(mappedRight);
 
 
-  int mappedLeft = map(_speedLeftMotor, 0, 100 , -128, 128);
+  int mappedLeft = map(_speedLeftMotor, -100, 100 , -128, 128);
   Serial.print(_speedLeftMotor);
   Serial.print(" left Motor - Maped ");
   Serial.println(mappedLeft);
@@ -187,8 +208,8 @@ void Motor::_figureOutDirectionEngine(int y, int x){
   
   _digitalPotWrite(0,mappedRight);
   _digitalPotWrite(1,mappedLeft);
-
-  delay(100);
+  
+  //delay(100);
 
 }
 
@@ -196,20 +217,20 @@ void Motor::_relaySwitches()
 {
   if(_speedLeftMotor < 0)
   {
-    turnOnOffRelay(_speedLeftMotor ,0);
+    turnOnOffRelay(_leftMotorRelay ,0);
   }
   else
   {
-    turnOnOffRelay(_speedLeftMotor ,1);
+    turnOnOffRelay(_leftMotorRelay ,1);
   }
 
   if(_speedRightMotor < 0)
   {
-    turnOnOffRelay(_speedRightMotor ,0);
+    turnOnOffRelay(_rightMotorRelay ,0);
   }
   else
   {
-    turnOnOffRelay(_speedRightMotor ,1);
+    turnOnOffRelay(_rightMotorRelay ,1);
   }
 }
 

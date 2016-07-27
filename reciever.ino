@@ -29,11 +29,11 @@ void setup() {
 
   //shift register 7-10
   
-  //motorMode.pins(4,5,10,1,2);
+  motorMode.pins(4,5,10,1,2);
   //fireMode.pins(3,6,3,4);
   //7,8,9 input
   //5,6,7,8, outputs
-  submergingMode.pins(7,8,9,5,6,7,8);
+  //submergingMode.pins(7,8,9,5,6,7,8);
   //headRotationMode.pins(2,A3,A4);
 
 
@@ -41,7 +41,7 @@ void setup() {
   So A0 - A5 pins get mapped to values
   14 - 19
   */
-  masterSetup.pins(A0,A1,A2);
+  masterSetup.pins(A2,A1,A0);
 
   
   Serial.begin(9600);
@@ -52,9 +52,9 @@ void setup() {
 
 void loop() { 
   
-  //motorMode.readMotorsInputAndTurn();
+  motorMode.readMotorsInputAndTurn();
   //fireMode.checkFireSwitch();
-  submergingMode.checkSubmerging();
+  //submergingMode.checkSubmerging();
   //headRotationMode.checkHeadRotation();
   
   
@@ -66,7 +66,7 @@ void loop() {
   
   masterSetup.cycleSwitchRelay();
   
-  delay(1000);
+  //delay(1000);
   
   
 }

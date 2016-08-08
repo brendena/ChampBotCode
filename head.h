@@ -8,16 +8,16 @@
 class Head : public Master
 {
    private:
-    int _relayUpDownRotation; // up-Down relay 
-    int _relayOnOffRotation;  // On-Off relay
+    int _relayForwardRotation; // up-Down relay 
+    int _relayBackwardRotation;  // On-Off relay
     int _channelPin;
     
-    void _testInputValues(int UpDownRotationValue);
-    void _checkRotationConditionals(int UpDownRotationValue);
+    void _testInputValues(int forwardRotationValue);
+    void _checkRotationConditionals(int backwardRotationValue);
     
   public:
     Head ();
-    void pins (int channelPin, int relayUpDownRotation, int relayOnOffRotation);
+    void pins (int channelPin, int relayForwardRotation, int relayBackwardRotation);
     void checkHeadRotation();
 };
 

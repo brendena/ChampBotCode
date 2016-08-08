@@ -29,12 +29,12 @@ void setup() {
 
   //shift register 7-10
   
-  motorMode.pins(4,5,10,1,2);
-  //fireMode.pins(3,6,3,4);
+  motorMode.pins(4,5,10,6,7);
+  fireMode.pins(3,6,5,1);
   //7,8,9 input
   //5,6,7,8, outputs
-  //submergingMode.pins(7,8,9,5,6,7,8);
-  //headRotationMode.pins(2,A3,A4);
+  submergingMode.pins(7,8,9,3,2,8,4);
+  headRotationMode.pins(2,A3,A4);
 
 
   /*
@@ -53,9 +53,9 @@ void setup() {
 void loop() { 
   
   motorMode.readMotorsInputAndTurn();
-  //fireMode.checkFireSwitch();
-  //submergingMode.checkSubmerging();
-  //headRotationMode.checkHeadRotation();
+  fireMode.checkFireSwitch();
+  submergingMode.checkSubmerging();
+  headRotationMode.checkHeadRotation();
   
   
   /*

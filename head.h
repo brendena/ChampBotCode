@@ -12,8 +12,8 @@ class Head : public Master
     int _relayBackwardRotation;  // On-Off relay
     int _channelPin;
     
-    void _testInputValues(int forwardRotationValue);
-    void _checkRotationConditionals(int backwardRotationValue);
+    void _testInputValues(int relayForwardRotation);
+    void _checkRotationConditionals(int relayForwardRotation);
     
   public:
     Head ();

@@ -14,7 +14,7 @@ void Head::pins(int channelPin, int relayForwardRotation, int relayBackwardRotat
   _relayForwardRotation = relayForwardRotation; 
 
     pinMode(relayBackwardRotation, OUTPUT);
-  relayBackwardRotation = relayBackwardRotation; 
+  _relayBackwardRotation = relayBackwardRotation; 
 
 }
 

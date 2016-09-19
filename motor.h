@@ -18,7 +18,10 @@ class Motor : public Master
     void _digitalPotWrite(int address, int value);
     void _figureOutDirectionEngine(int y, int x);
     void _relaySwitches();
-    
+    void _rampUp(int channel, int lastRegisteredSpeed, int currentSpeed);
+
+    int _lastRegisteredSpeedRight;
+    int _lastRegisteredSpeedLeft;
     int _speedLeftMotor;
     int _speedRightMotor;
     int _xPin; //pin

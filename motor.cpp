@@ -2,7 +2,8 @@
 
 
 Motor::Motor (){
-  
+   _lastRegisteredSpeedRight = 0;
+   _lastRegisteredSpeedLeft = 0;
 }
 
 int Motor::_marginErrorNumber = 5;
@@ -43,7 +44,7 @@ void Motor::readMotorsInputAndTurn(){
   //_testInputValues(x, y);
   
 	_figureOutDirectionEngine(x,y); // (upDown, leftRigh)
-	
+
 }
 
 void Motor::_figureOutDirectionEngine(int y, int x){
@@ -52,7 +53,7 @@ void Motor::_figureOutDirectionEngine(int y, int x){
   if(y == 0 )
   {
     _digitalPotWrite(0,0);
-    _digitalPotWrite(1,0);
+    _digitalPotWrite(2,0);
     return;
   }
   
@@ -159,7 +160,7 @@ void Motor::_figureOutDirectionEngine(int y, int x){
 			}
 			//backwards
 			else{
-				_speedLeftMotor = (y  * .5) - (x + maxParametersMaped)/2  ; //x needs to be subtracted because x is negative and we need to add number
+				_speedLeftMotor = (y  * .5) - (x + maxParametersMaped)/2; //x needs to be subtracted because x is negative and we need to add number
 					
 			}
      _speedRightMotor = y;
@@ -171,12 +172,12 @@ void Motor::_figureOutDirectionEngine(int y, int x){
 			//forwards
 			if(y > 0){
 				
-				_speedRightMotor = (y * .5)  - (x - maxParametersMaped) /2;
+				_speedRightMotor = (y * .5) - (x - maxParametersMaped) /2;
 			}
 			//backwards
-			else {
-				
-				_speedRightMotor = (y * .5)  + (x - maxParametersMaped) /2;
+			else 
+			{	
+				_speedRightMotor = (y * .5) + (x - maxParametersMaped) /2;
 			}
 		}
 	}
@@ -190,6 +191,8 @@ void Motor::_figureOutDirectionEngine(int y, int x){
   
   */
 
+  
+  
   _relaySwitches();
 
   
@@ -205,11 +208,13 @@ void Motor::_figureOutDirectionEngine(int y, int x){
   Serial.print(" left Motor - Maped ");
   Serial.println(mappedLeft);
 
+
+  _rampUp(2, _lastRegisteredSpeedRight,_speedRightMotor);
+  _rampUp(0, _lastRegisteredSpeedLeft,_speedLeftMotor);
   
-  _digitalPotWrite(0,mappedRight);
-  _digitalPotWrite(1,mappedLeft);
-  
-  //delay(100);
+  _lastRegisteredSpeedRight = _speedRightMotor;
+  _lastRegisteredSpeedLeft = _speedLeftMotor;
+/////////
 
 }
 
@@ -233,6 +238,44 @@ void Motor::_relaySwitches()
     turnOnOffRelay(_rightMotorRelay ,1);
   }
 }
+
+
+void Motor::_rampUp(int channel, int lastRegisteredSpeed, int currentSpeed)
+{
+  /*
+  if (lastRegisteredSpeed <= currentSpeed)
+  {
+      for(int i=lastRegisteredSpeed; i <= currentSpeed; i++)
+      {
+        Serial.print("CURRENT SPEED: ");
+        Serial.println(i);
+        _digitalPotWrite(channel,abs(i));
+      }
+  }
+  else
+  {
+    for(int j=lastRegisteredSpeed; j >= currentSpeed; j--)
+      {
+        Serial.print("CURRENT SPEED: ");
+        Serial.println(j);
+        
+        _digitalPotWrite(channel,abs(j));
+      }
+  }
+  */
+  if (lastRegisteredSpeed <= currentSpeed)
+  {
+        _digitalPotWrite(channel,abs(lastRegisteredSpeed + 1));
+
+  }
+  else
+  {
+       _digitalPotWrite(channel,abs(lastRegisteredSpeed - 1));
+
+  }
+  
+}
+
 
 void Motor::_digitalPotWrite(int address, int value){
     // take the SS pin low to select the chip:

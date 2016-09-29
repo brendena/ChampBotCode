@@ -22,3 +22,5 @@ https://www.arduino.cc/en/Tutorial/DigitalPotentiometer
 tretch goals
 
 Figure out a alternative antena designe or get current own to work more reliably
+
+figure out why the chip doesn't like the valves.

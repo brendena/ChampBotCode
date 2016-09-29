@@ -14,6 +14,9 @@ Todo
 
 6. look into getting a differnt chip
 http://www.analog.com/media/en/news-marketing-collateral/product-selection-guide/Choosing_the_Correct_Digipot.pdf
+https://www.arduino.cc/en/Tutorial/DigitalPotentiometer
+
+7. make a trello for this project
 
 
 tretch goals

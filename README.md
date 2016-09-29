@@ -7,6 +7,7 @@ Todo
 2. make sure transistor work
 
 3. add bluetooth
+https://cdn.instructables.com/FSK/AI30/HMMFE6UO/FSKAI30HMMFE6UO.MEDIUM.jpg
 
 4. add comments 
 

@@ -2,8 +2,7 @@
 
 
 Motor::Motor (){
-   _lastRegisteredSpeedRight = 0;
-   _lastRegisteredSpeedLeft = 0;
+  
 }
 
 int Motor::_marginErrorNumber = 5;
@@ -17,7 +16,7 @@ void Motor::_testInputValues(int upDown, int leftRight){
 }
 
 
-void Motor::pins(int xPin, int yPin, int slavePin, int leftMotorRelay, int rightMotorRelay)
+void Motor::pins(int xPin, int yPin, int slavePin, int leftMotorRelay, int rightMotorRelay, int pinTurnOffMotorBoards)
 {
   pinMode(xPin, INPUT);
   _xPin = xPin;
@@ -25,6 +24,8 @@ void Motor::pins(int xPin, int yPin, int slavePin, int leftMotorRelay, int right
   _yPin = yPin;
   pinMode(slavePin, OUTPUT);
   _slavePin = slavePin;
+  pinMode(_pinTurnOffMotorBoards, OUTPUT);
+  _pinTurnOffMotorBoards = pinTurnOffMotorBoards
 
   _leftMotorRelay = leftMotorRelay;
   _rightMotorRelay = rightMotorRelay;
@@ -41,10 +42,24 @@ void Motor::readMotorsInputAndTurn(){
   // add (100) to fix the range for left and right movement
   y = y + 100;
   
-  //_testInputValues(x, y);
-  
-	_figureOutDirectionEngine(x,y); // (upDown, leftRigh)
+  _testInputValues(x, y);
 
+  /*Warning*/
+  //for some weird reason x doesn't give a 0 value when not getting a signal
+  
+  //no signals turn off relays
+  if(x == 0 || y == 0 || submerginOrRissing == true){
+    Serial.print("turn off Motor Relays");
+    turnOnOffRelay(_rightMotorRelay ,1);
+    turnOnOffRelay(_leftMotorRelay ,1);
+    //turn motors off
+    digitalWrite(_pinTurnOffMotorBoards, LOW);
+  }
+  else{
+    //turn motors off
+    digitalWrite(_pinTurnOffMotorBoards, HIGH);
+	  _figureOutDirectionEngine(x,y); // (upDown, leftRigh)
+  }
 }
 
 void Motor::_figureOutDirectionEngine(int y, int x){
@@ -53,7 +68,7 @@ void Motor::_figureOutDirectionEngine(int y, int x){
   if(y == 0 )
   {
     _digitalPotWrite(0,0);
-    _digitalPotWrite(2,0);
+    _digitalPotWrite(1,0);
     return;
   }
   
@@ -160,7 +175,7 @@ void Motor::_figureOutDirectionEngine(int y, int x){
 			}
 			//backwards
 			else{
-				_speedLeftMotor = (y  * .5) - (x + maxParametersMaped)/2; //x needs to be subtracted because x is negative and we need to add number
+				_speedLeftMotor = (y  * .5) - (x + maxParametersMaped)/2  ; //x needs to be subtracted because x is negative and we need to add number
 					
 			}
      _speedRightMotor = y;
@@ -172,12 +187,12 @@ void Motor::_figureOutDirectionEngine(int y, int x){
 			//forwards
 			if(y > 0){
 				
-				_speedRightMotor = (y * .5) - (x - maxParametersMaped) /2;
+				_speedRightMotor = (y * .5)  - (x - maxParametersMaped) /2;
 			}
 			//backwards
-			else 
-			{	
-				_speedRightMotor = (y * .5) + (x - maxParametersMaped) /2;
+			else {
+				
+				_speedRightMotor = (y * .5)  + (x - maxParametersMaped) /2;
 			}
 		}
 	}
@@ -191,30 +206,32 @@ void Motor::_figureOutDirectionEngine(int y, int x){
   
   */
 
-  
-  
   _relaySwitches();
 
+  int mappedExtremes = 255;
+  int mappedMinus = -255;
   
-  int mappedRight = map(_speedRightMotor,-100, 100 , -128, 128);
+  int mappedRight = map(_speedRightMotor,-100, 100 , mappedMinus, mappedExtremes);
 
   Serial.print(_speedRightMotor);
   Serial.print(" right Motor - Maped ");
   Serial.println(mappedRight);
 
 
-  int mappedLeft = map(_speedLeftMotor, -100, 100 , -128, 128);
+  int mappedLeft = map(_speedLeftMotor, -100, 100 , mappedMinus, mappedExtremes);
   Serial.print(_speedLeftMotor);
   Serial.print(" left Motor - Maped ");
   Serial.println(mappedLeft);
 
-
-  _rampUp(2, _lastRegisteredSpeedRight,_speedRightMotor);
-  _rampUp(0, _lastRegisteredSpeedLeft,_speedLeftMotor);
   
-  _lastRegisteredSpeedRight = _speedRightMotor;
-  _lastRegisteredSpeedLeft = _speedLeftMotor;
-/////////
+  _digitalPotWrite(0,abs(mappedRight));
+  _digitalPotWrite(1,abs(mappedLeft));
+  
+  Serial.println("mappedright");
+  Serial.println(abs(mappedRight));
+  Serial.println("mappedLeft");
+  Serial.println(abs(mappedLeft));
+  //delay(100);
 
 }
 
@@ -238,44 +255,6 @@ void Motor::_relaySwitches()
     turnOnOffRelay(_rightMotorRelay ,1);
   }
 }
-
-
-void Motor::_rampUp(int channel, int lastRegisteredSpeed, int currentSpeed)
-{
-  /*
-  if (lastRegisteredSpeed <= currentSpeed)
-  {
-      for(int i=lastRegisteredSpeed; i <= currentSpeed; i++)
-      {
-        Serial.print("CURRENT SPEED: ");
-        Serial.println(i);
-        _digitalPotWrite(channel,abs(i));
-      }
-  }
-  else
-  {
-    for(int j=lastRegisteredSpeed; j >= currentSpeed; j--)
-      {
-        Serial.print("CURRENT SPEED: ");
-        Serial.println(j);
-        
-        _digitalPotWrite(channel,abs(j));
-      }
-  }
-  */
-  if (lastRegisteredSpeed <= currentSpeed)
-  {
-        _digitalPotWrite(channel,abs(lastRegisteredSpeed + 1));
-
-  }
-  else
-  {
-       _digitalPotWrite(channel,abs(lastRegisteredSpeed - 1));
-
-  }
-  
-}
-
 
 void Motor::_digitalPotWrite(int address, int value){
     // take the SS pin low to select the chip:

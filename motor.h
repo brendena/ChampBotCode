@@ -9,8 +9,8 @@ class Motor : public Master
 {
   public:
     Motor ();
-    void pins(int xPin, int yPin, int slavePin, int leftMotorRelay, int rightMotorRelay);
-    void readMotorsInputAndTurn();
+    void pins(int xPin, int yPin, int slavePin, int leftMotorRelay, int rightMotorRelay, int pinTurnOffMotorBoards);
+    void readMotorsInputAndTurn(bool submerginOrRissing);
     
   private:
     void _testInputValues(int upDown, int leftRigh);
@@ -18,10 +18,7 @@ class Motor : public Master
     void _digitalPotWrite(int address, int value);
     void _figureOutDirectionEngine(int y, int x);
     void _relaySwitches();
-    void _rampUp(int channel, int lastRegisteredSpeed, int currentSpeed);
-
-    int _lastRegisteredSpeedRight;
-    int _lastRegisteredSpeedLeft;
+    
     int _speedLeftMotor;
     int _speedRightMotor;
     int _xPin; //pin
@@ -29,6 +26,7 @@ class Motor : public Master
     int _slavePin;
     int _leftMotorRelay;
     int _rightMotorRelay;
+    int _pinTurnOffMotorBoards;
 };
 
 

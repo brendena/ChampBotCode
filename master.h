@@ -6,12 +6,13 @@
 
 class Master {
   public:
-  
+    Master();
+    
     void pins(int dataPin, int latchPin, int clockPin);
     void cycleSwitchRelay();
     void resetRelayes();
     void turnOnOffRelay(int changePin, int onOff); //array
-  
+    
 
     
     void testShiftRegister();
@@ -44,14 +45,29 @@ class Master {
     
     static int _shiftRegisterCurrentValue;
     static int _shiftRegisterOriginalValue;
+
     
     int _SRDataPin; //SR - shift register
     int _SRLatchPin;
     int _SRClockPin;
     
     void _shiftInBytes(int bytes);
+    void _checkConditionals();
     
     
+
+   //relayNumbers
+   struct relayNumbers {
+    int oilSpray;
+    int relayInflateValue;
+    int relayReleaseValve;
+    int e_relayInflateValve;
+    int glowPlug;
+    int leftRelay;
+    int rightRelay;
+    int e_relayReleaseValve;
+   };
+   relayNumbers rN;
 };
 
 #endif

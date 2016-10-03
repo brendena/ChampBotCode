@@ -24,13 +24,34 @@ class Submerge : public Master
     int _e_relayReleaseValve;
     int _e_relayInflateValve;
     
+    /*
     unsigned long _timer, _startTime, _currentTime, _emergencyTimerValue, _inflatingTimerValue, _emergencyInflatingTimerValue;
     bool _firstTimeSubmerging, _firstTimeInflating, _firstTimeEmergencyInflating;
+    bool _emergancyChecker, _inflatingChecker, _emergencyInflatingChecker;
+    */
+
+   struct timerObject{
+      unsigned long _startTime;
+      int duration;
+      bool _flag;
+    };
+    
+    timerObject _emergencyTimer;
+    timerObject _inflatingTimerValue;
+    timerObject _emergencyInflatingTimerValue;
+
+   
     void _testInputValues(int submerginValue, int modeDialValue, int e_modeDialValue );
     void _checkSubmerginConditional(int submergeRadioValue, int modeDial, int e_modeDial);
+    void resetTimers();
 
-    unsigned long _checkTimer(bool& firstTimeIndicator);
-    bool _emergancyChecker, _inflatingChecker, _emergencyInflatingChecker;
+    bool _checkTimer(bool& firstTimeIndicator);
+    
+    bool emergancyModeIsPermanentlyOn;
+
+
+    //one means not active
+    void changeRelayStates(int state);
 };
 /*
 Notes

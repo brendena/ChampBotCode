@@ -1,4 +1,4 @@
-  #include "master.h"
+    #include "master.h"
 
 int Master::minParametersMaped = 0;
 int Master::maxParametersMaped = 100;
@@ -8,6 +8,25 @@ int Master::_shiftRegisterCurrentValue = 0;
 int Master::_shiftRegisterOriginalValue = 0;
 int Master::_shiftRegisterMaxValue = 255;
 
+  /* 1 - oil spray
+   * 2 - relayInflateValve
+   * 3 - relayReleaseValve
+   * 4 - e_relayInflateValve
+   * 5 - glow plug
+   * 6 - left relay
+   * 7 - right relay
+   * 8 - e_relayReleaseValve
+   */
+Master::Master(){
+  rN.oilSpray = 1;
+  rN.relayInflateValue = 2;
+  rN.relayReleaseValve = 4;
+  rN.e_relayInflateValve  = 8;
+  rN.glowPlug = 16;
+  rN.leftRelay = 32;
+  rN.rightRelay = 64;
+  rN.e_relayReleaseValve = 128;
+}
 
 
 void Master::pins(int dataPin, int latchPin, int clockPin)
@@ -47,7 +66,6 @@ int Master::DialValue(int value)
 /*
 Input 
 example
-turnOnOffRelay( [[pinYouWantToSwitch, OnOrValue], [8, 0]] );
 
 How Works-
 Basically the 74hc595 has 8 output pins and this function allows you to change 
@@ -91,11 +109,42 @@ void Master::turnOnOffRelay(int changePin, int onOff)
 }
 
 /*
+basically check when and where things can happen.
+*/
+void Master::_checkConditionals(){
+
+  //see if its active
+  //active mean values 0
+  // if submerging  you can't
+  if(( (_shiftRegisterCurrentValue & rN.relayInflateValue) != rN.relayInflateValue) ||
+     (  (_shiftRegisterCurrentValue & rN.relayReleaseValve) != rN.relayReleaseValve )||
+     (  (_shiftRegisterCurrentValue & rN.e_relayInflateValve) != rN.e_relayInflateValve)){
+      //you can't oilspray left or right relay and glowPlug
+    _shiftRegisterCurrentValue = _shiftRegisterCurrentValue | rN.oilSpray | rN.glowPlug | rN.leftRelay | rN.rightRelay;
+  }
+  
+  //if glowPlugs on or spraying fire you can't
+  if(( (_shiftRegisterCurrentValue & rN.glowPlug) != rN.glowPlug) || 
+     ( (_shiftRegisterCurrentValue & rN.oilSpray) != rN.oilSpray)){
+      
+    // submerge or inflate
+    _shiftRegisterCurrentValue = _shiftRegisterCurrentValue | rN.relayReleaseValve | rN.relayInflateValue;
+  }  
+  
+}
+
+
+/*
 every cycle there
 */
 void Master::cycleSwitchRelay()
 {
+  //things that can't happen
+  //change _shiftRegisterCurrentValue
 
+  _checkConditionals();
+
+  
   if( _shiftRegisterCurrentValue != _shiftRegisterOriginalValue )
   {
     Serial.println("__________shiftingBytes_________");
@@ -103,6 +152,8 @@ void Master::cycleSwitchRelay()
     _shiftInBytes(_shiftRegisterCurrentValue);  
   }
   //Serial.println("cycle");
+
+  
   _shiftRegisterOriginalValue = _shiftRegisterCurrentValue;
   /* 
   i want it to check to see if it's changed so i don't have to keep wrighting

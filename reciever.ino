@@ -1,9 +1,8 @@
 #include "motor.h"
-#include "header.h"
 #include "submerge.h"
 #include "fire.h"
 #include "head.h"
-
+#include "Arduino.h"
 
 
 //each differnt section of the champ bot

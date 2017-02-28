@@ -1,7 +1,7 @@
     #include "master.h"
 
-int Master::minParametersMaped = 0;
-int Master::maxParametersMaped = 100;
+int Master::_minParametersMaped = 0;
+int Master::_maxParametersMaped = 100;
 int Master::_mapedLowerBound = 1040;
 int Master::_mapedUpperBound = 1880;
 int Master::_shiftRegisterCurrentValue = 0;
@@ -156,8 +156,7 @@ void Master::cycleSwitchRelay()
   
   _shiftRegisterOriginalValue = _shiftRegisterCurrentValue;
   /* 
-  i want it to check to see if it's changed so i don't have to keep wrighting
-  to it
+  i want it to check to see if it's changed so i don't have to keep wrighting to it
   */
 }
 
@@ -189,14 +188,14 @@ int Master::changeRange(int x){
   }
   else if(x < _mapedLowerBound)
   {
-    return minParametersMaped;
+    return _minParametersMaped;
   }
   else if(x > _mapedUpperBound)
   {
-    return maxParametersMaped;
+    return _maxParametersMaped;
   }
   
-  return map(x,_mapedLowerBound, _mapedUpperBound,minParametersMaped, maxParametersMaped);
+  return map(x,_mapedLowerBound, _mapedUpperBound, _minParametersMaped, _maxParametersMaped);
   
   //map(value, fromLow, fro-+mHigh,toLow, toHigh)
     

@@ -1,7 +1,7 @@
 # Champlain Champbot
 ![Alt text](./champBot.jpg?raw=true "champbot")
 
-## Champbot is a competition for current rules [click here](https://help.github.com/articles/relative-links-in-readmes/)
+## Champbot is a competition for current rules [click here](https://champlain.makerfaire.com/champbot/)
 
 I've uploaded all the code for the project that we used in the project.  I've also uploaded a Ai file with the wiring diagram with details on how everthing works.  
 
